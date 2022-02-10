@@ -1,5 +1,5 @@
+%IN ORDER TO RUN THIS CODE COPY&PASTE THE THREE FILES IN MATLAB IN SEPARATE FILES AND RUN FIRSTLY THIS FILE, WHICH WILL THEN CALL THE TWO OTHERS FILES(FUNCTION FILES)
 clear all; clc;
-
 %% Intervention Scenario:Adequate Syringe&HAART1&Normal Prevalence(-->because normal prevalence fits better to data)
 
 % Guess what beta might be. Note: lb = lower bound, ub = upper bound
@@ -172,7 +172,7 @@ fitted_p;
   [t,y] = ode45(@(t,y) acutemfit_eq_final(t,y,p,current_r18,current_z1,current_z2,current_z3,current_z4,current_z5,current_nsp1,current_nsp2,current_nsp3,current_nsp4,current_nsp5,current_nsp6,current_nsp7,current_nsp8,current_nsp9,current_nsp10,current_nsp11,current_nsp12,current_nsp13), [1:0.01:60], [4432.72 0 26.7569 0 3574.94 0 21.5791 0], options);
 
  
- %PREVALENCES FOR THE TIMEPOINTS THAT I HAVE DATA:
+ %PREVALENCESFOR THE TIMEPOINTS THAT I HAVE DATA:
   N=8056;
   w =current_r18;%0.42;
   u=10;%7.9;
