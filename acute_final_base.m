@@ -61,7 +61,7 @@ fitted_parameter_beta;
 i
 resnorm ;
 A(i,:)=[i,resnorm];
-    [M,I] = min(A);
+[M,I] = min(A);
 param1 = fitted_parameter_beta;
 p = param1;
 [t,y] = ode45(@(t,y) acute_mfit_eq_final_base(t,y,p,current_z1,current_nsp9), [1:0.01:60], [4432.72 0 26.7569 3574.94 0 21.5791], options);
@@ -131,12 +131,9 @@ freqb_prcj95(j,:)=prctile(results_frequencyb_timeseries(j,:),[2.5 50 95]);
 freqb_prcj90(j,:)=prctile(results_frequencyb_timeseries(j,:),[2.5 50 90]);
 end
 
-
 results_prevalence_timeseries(:,i) = 100*(y(:,2)+y(:,4))./sum(y(:,:),2);
-  %CALCULATE JUST THE PREVALENCE THAT COMES FROM THE BEST FITTED PARAMETERS
-  %F_results_prevalence_timeseries(:,368) = 100*(y(:,2)+y(:,4))./sum(y(:,:),2);
   
-  %ESTIMATE 2.5,MEDIAN,7.5 PREVALENCE after the running-i doit after running this code but(maybe it can be done
+%ESTIMATE 2.5,MEDIAN,7.5 PREVALENCE after the running-i doit after running this code but(maybe it can be done
 %on the same code Ihaven;t tried it!
 for j=1:5901
 prevbase_prcj(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 97.5]); 
