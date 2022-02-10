@@ -185,27 +185,20 @@ fitted_p;
    %plot(i,resnorm,'r*')
    %text(i,resnorm,labels,'HorizontalAlignment','right')
     
- %%%
- %%% 23Nov2018_AL:
+ 
  %%% Now solve the system of equations using the fitted_p that was just
  %%% determined in the previous step with LSQNONLIN
    param1 = fitted_p(1);
    param2 = fitted_p(2);
    param3 = fitted_p(3);
- %%%
- %%% 23Nov2018_AL:
+
  %%% Note: In order to use the equations file 'mfit_eq_final_g', you will
  %%% have to make sure the input arguments are in the same format
    p = [param1,param2,param3];
    
   [t,y] = ode45(@(t,y) acutemfit_eq_final(t,y,p,current_r18,current_z1,current_z2,current_z3,current_z4,current_z5,current_nsp1,current_nsp2,current_nsp3,current_nsp4,current_nsp5,current_nsp6,current_nsp7,current_nsp8,current_nsp9,current_nsp10,current_nsp11,current_nsp12,current_nsp13), [1:0.01:60], [4432.72 0 26.7569 0 3574.94 0 21.5791 0], options);
 
- %%%
- %%% 23Nov2018_AL:
- %%% In this main file, you have not defined what is the variable 'N'
- %%% In this case, 'N' is the total population at timepoint 1201
  
- %ELINA:prevalence_model_ = (y(:,2)+y(:,5))/N
  %PREVALENCES FOR THE TIMEPOINTS THAT I HAVE DATA:
   %results1_prevalence(i) = 100*(y(1201,2)+y(1201,5))/sum(y(1201,:),2);
   %results2_prevalence(i) = 100*(y(2401,2)+y(2401,5))/sum(y(2401,:),2);
@@ -295,126 +288,16 @@ end
   incidence_prc8=prctile(results_incidence_timeseries(5901,:),[2.5 50 97.5]);
   incid_table=[incidence_prc0;incidence_prc1;incidence_prc2;incidence_prc3;incidence_prc4;incidence_prc5;incidence_prc6;incidence_prc7;incidence_prc8;];
   
-   %INCIDENCE RATE PER TIMEPOINT/95 PERCENTILES
- %incidence_prc0_95=prctile(results_incidence_timeseries(1,:),[2.5 50 95]);
- %incidence_prc1_95=prctile(results_incidence_timeseries(1201,:),[2.5 50 95]);
- %incidence_prc2_95=prctile(results_incidence_timeseries(2401,:),[2.5 50 95]);
- %incidence_prc3_95=prctile(results_incidence_timeseries(4401,:),[2.5 50 95]);
- %incidence_prc4_95=prctile(results_incidence_timeseries(4701,:),[2.5 50 95]);
- %incidence_prc5_95=prctile(results_incidence_timeseries(5001,:),[2.5 50 95]);
- %incidence_prc6_95=prctile(results_incidence_timeseries(5401,:),[2.5 50 95]);
- %incidence_prc7_95=prctile(results_incidence_timeseries(5701,:),[2.5 50 95]);
- %incidence_prc8_95=prctile(results_incidence_timeseries(5901,:),[2.5 50 95]);
- %incid_table_95=[incidence_prc0_95;incidence_prc1_95;incidence_prc2_95;incidence_prc3_95;incidence_prc4_95;incidence_prc5_95;incidence_prc6_95;incidence_prc8_95;];  
-   
- %INCIDENCE RATE PER TIMEPOINT/90 PERCENTILES
- %incidence_prc0_90=prctile(results_incidence_timeseries(1,:),[2.5 50 90]);
- %incidence_prc1_90=prctile(results_incidence_timeseries(1201,:),[2.5 50 90]);
- %incidence_prc2_90=prctile(results_incidence_timeseries(2401,:),[2.5 50 90]);
- %incidence_prc3_90=prctile(results_incidence_timeseries(4401,:),[2.5 50 90]);
- %incidence_prc4_90=prctile(results_incidence_timeseries(4701,:),[2.5 50 90]);
- %incidence_prc5_90=prctile(results_incidence_timeseries(5001,:),[2.5 50 90]);
- %incidence_prc6_90=prctile(results_incidence_timeseries(5401,:),[2.5 50 90]);
- %incidence_prc7_90=prctile(results_incidence_timeseries(5701,:),[2.5 50 90]);
- %incidence_prc8_90=prctile(results_incidence_timeseries(5901,:),[2.5 50 90]);
- %incid_table_90=[incidence_prc0_90;incidence_prc1_90;incidence_prc2_90;incidence_prc3_90;incidence_prc4_90;incidence_prc5_90;incidence_prc6_90;incidence_prc8_90;];  
-   
-  %INCIDENCE RATE
-  %results_incidence_timeseries(:,i) = 100*12*(lamda0*S0+lamda1*S1)/S;
-%%%ORIGINAL  P=100*12*(lamda0'*y(:,1)+lamda1'*y(:,4));
-%%%ORIGINAL  S=(y(:,1)+y(:,4));
-%%%ORIGINAL  results_incidence_timeseries=bsxfun(@rdivide,P,S');
-%%%
-%%% 05DEC2018_AL: Instead of matrix multiplication using a dot product, we
-%%% should do element-wise multiplcation, i.e. multiply element1 with
-%%% element1 and put that in the first spot of the new vector
-%%%   ---> Note that the 'bsxfun' is the same as element-wise
-%%%   ---> So, for example, ./ is the same as bsxfun(@rdivide,P,S)
-  %P=100*12*(lamda0.*y(:,1)+lamda1.*y(:,4));
-  %S=(y(:,1)+y(:,4));
-  %results_incidence_timeseries=P./S;
   
   
  %INCIDENCE RATE
-  %results_incidence_timeseries(:,i) = 100*12*(lamda0*S0+lamda1*S1)/S;
-  %WRONG CALCULATED-TOO BIG
-  %I_N=lamda0'*y(:,1)+lamda1'*y(:,4);
-  %P=100*12*(lamda0'*y(:,1)+lamda1'*y(:,4));
-  %RIGHT CALCULATED
-  %S=(y(:,1)+y(:,4));
   %results_incidence_timeseries=bsxfun(@rdivide,P,S');
   
-  %R0_LOW RISK GROUP
-  R0l(i)=fitted_p(1)/(m+q);
-  R0_prc = prctile(R0l,[2.5 50 97.5]) ;
-  
-  %R0_HIGH RISK GROUP
-  R0h(i)=u*fitted_p(1)/(m+q);
-  R0h_prc = prctile(R0h,[2.5 50 97.5]) ;
-  %p1h_prc=u*p1_prc;
-  %R0h2_prc =p1h_prc/(m+q);
-  %Re_LOW RISK GROUP
-  %Rel(:,i)=R0l*y(:,1)/N;
-  %Re_HIGH RISK GROUP
-  %Rel(:,i)=R0h*y(:,4)/N;
-  
-  %RE_LOW RISK GROUP FOR THE TIMEPOINTS OF DATA
-  Rel_0(i)=R0l(i)*y(1,1)/N;
-  Rel_1(i)=R0l(i)*y(1201,1)/N;
-  Rel_2(i)=R0l(i)*y(2401,1)/N;
-  Rel_3(i)=R0l(i)*y(4401,1)/N;
-  Rel_4(i)=R0l(i)*y(4701,1)/N;
-  Rel_5(i)=R0l(i)*y(5001,1)/N;
-  Rel_6(i)=R0l(i)*y(5401,1)/N;
-  Rel_7(i)=R0l(i)*y(5701,1)/N;
-  Rel_8(i)=R0l(i)*y(5901,1)/N;
-  
-  Rel_prc0=prctile(Rel_0,[2.5 50 97.5]);
-  Rel_prc1=prctile(Rel_1,[2.5 50 97.5]);
-  Rel_prc2=prctile(Rel_2,[2.5 50 97.5]);
-  Rel_prc3=prctile(Rel_3,[2.5 50 97.5]);
-  Rel_prc4=prctile(Rel_4,[2.5 50 97.5]);
-  Rel_prc5=prctile(Rel_5,[2.5 50 97.5]);
-  Rel_prc6=prctile(Rel_6,[2.5 50 97.5]);
-  Rel_prc7=prctile(Rel_7,[2.5 50 97.5]);
-  Rel_prc8=prctile(Rel_8,[2.5 50 97.5]);
-  Rel_table=[Rel_prc0;Rel_prc1;Rel_prc2;Rel_prc3;Rel_prc4;Rel_prc5;Rel_prc6;Rel_prc8;];
-  %RE_HIGH RISK GROUP FOR THE TIMEPOINTS OF DATA
-  Reh_0(i)=R0h(i)*y(1,5)/N;
-  Reh_1(i)=R0h(i)*y(1201,5)/N;
-  Reh_2(i)=R0h(i)*y(2401,5)/N;
-  Reh_3(i)=R0h(i)*y(4401,5)/N;
-  Reh_4(i)=R0h(i)*y(4701,5)/N;
-  Reh_5(i)=R0h(i)*y(5001,5)/N;
-  Reh_6(i)=R0h(i)*y(5401,5)/N;
-  Reh_7(i)=R0h(i)*y(5701,5)/N;
-  Reh_8(i)=R0h(i)*y(5901,5)/N;
-  
-  Reh_prc0=prctile(Reh_0,[2.5 50 97.5]);
-  Reh_prc1=prctile(Reh_1,[2.5 50 97.5]);
-  Reh_prc2=prctile(Reh_2,[2.5 50 97.5]);
-  Reh_prc3=prctile(Reh_3,[2.5 50 97.5]);
-  Reh_prc4=prctile(Reh_4,[2.5 50 97.5]);
-  Reh_prc5=prctile(Reh_5,[2.5 50 97.5]);
-  Reh_prc6=prctile(Reh_6,[2.5 50 97.5]);
-  Reh_prc7=prctile(Reh_7,[2.5 50 97.5]);
-  Reh_prc8=prctile(Reh_8,[2.5 50 97.5]);
-  Reh_table=[Reh_prc0;Reh_prc1;Reh_prc2;Reh_prc3;Reh_prc4;Reh_prc5;Reh_prc6;Reh_prc8;];
- 
-  
- 
- %%% 23Nov2018_AL:
-  %%% It might be a good idea to plot the timeseries of the solved system of
- %%% equations with each fitted_p over time, so I will save the whole
- %%% timeseries for prevalence and we will plot it below outside the FOR
- %%% loop
- %%% Note: Here we are dividing vectors, so you need to use ./ instead of
- %%%       using just /
+  %PREVALENCE TIMESERIES
   results_prevalence_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7))./N;%sum(y(:,:),2);
   results_prevalenceA_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7)+y(:,4)+y(:,8))./N;
   results_altprevalence_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7))./(N-y(:,4)-y(:,8));%sum(y(:,:),2);
   %CALCULATE JUST THE PREVALENCE THAT COMES FROM THE BEST FITTED PARAMETERS
-  %F_results_prevalence_timeseries(:,536) = 100*(y(:,2)+y(:,5))./sum(y(:,:),2);
   results_frequency_timeseries(:,i) = 100*(y(:,5)+y(:,6)+y(:,7)+y(:,8))./N;%sum(y(:,:),2);
  %FREQUENCY PERCENTILES AT AVAILABLE DATA TIMEPOINTS
  frequency_prc4=prctile(results_frequency_timeseries(4701,:),[2.5 50 97.5]);
@@ -430,48 +313,7 @@ freq_prcj(j,:)=prctile(results_frequency_timeseries(j,:),[2.5 50 97.5]);
 %freq_prcj95(j,:)=prctile(results_frequency_timeseries(j,:),[2.5 50 95]);
 %freq_prcj90(j,:)=prctile(results_frequency_timeseries(j,:),[2.5 50 90]);
 end
-
-%RE_TOTAL FOR THE TIMEPOINTS OF DATA
- %Re_total_prc4=Reh_prc4*frequency_prc4+Rel_prc4*(1-frequency_prc4);
- %Re_total_prc5=Reh_prc5*frequency_prc5+Rel_prc5*(1-frequency_prc5);
- %Re_total_prc6=Reh_prc6*frequency_prc6+Rel_prc6*(1-frequency_prc6);
- %Re_total_prc7=Reh_prc7*frequency_prc7+Rel_prc7*(1-frequency_prc7);
- %Re_total_prc8=Reh_prc8*frequency_prc8+Rel_prc8*(1-frequency_prc8);
- 
-
-
- results_therapylow_timeseries(:,i) = 100*(y(:,4)./(y(:,2)+y(:,3)));
- 
- 
- %THERAPY PERCENTILES AT AVAILABLE DATA TIMEPOINTS
- therapyl_prc4=prctile(results_therapylow_timeseries(4701,:),[2.5 50 97.5]);
- therapyl_prc5=prctile(results_therapylow_timeseries(5001,:),[2.5 50 97.5]);
- therapyl_prc6=prctile(results_therapylow_timeseries(5401,:),[2.5 50 97.5]);
- therapyl_prc7=prctile(results_therapylow_timeseries(5701,:),[2.5 50 97.5]);
- therapyl_prc8=prctile(results_therapylow_timeseries(5901,:),[2.5 50 97.5]);
- therapyl_table=[therapyl_prc4;therapyl_prc5;therapyl_prc6;therapyl_prc7;therapyl_prc8;];
-  
- 
- for j=1:5901
-therl_prcj(j,:)=prctile(results_therapylow_timeseries(j,:),[2.5 50 97.5]);
-%ther_prcj95(j,:)=prctile(results_therapy_timeseries(j,:),[2.5 50 95]);
-%ther_prcj90(j,:)=prctile(results_therapy_timeseries(j,:),[2.5 50 90]);
-end
-  %T= y(:,:);
- 
-  
-%AL    output.message
-    
-end
-%p_prc = prctile(p_values,[2(.5 50 97.5]) ;
 results;
-%results1_prevalence;
-%results2_prevalence;
-%results3_prevalence;
-%results4_prevalence;
-%results5_prevalence;
-%results6_prevalence;
-%results7_prevalence;
 
 %PREVALENCE PERCENTILES AT AVAILABLE DATA TIMEPOINTS
 %prev_prc0=0.006;
@@ -485,93 +327,22 @@ prev_prc7=prctile(results_prevalence_timeseries(5701,:),[2.5 50 97.5]);
 prev_prc8=prctile(results_prevalence_timeseries(5901,:),[2.5 50 97.5]);
 prev_table=[prev_prc1;prev_prc2;prev_prc3;prev_prc4;prev_prc5;prev_prc6;prev_prc7;prev_prc8;];
 
-%ALT_PREVALENCE PERCENTILES AT AVAILABLE DATA TIMEPOINTS-->NO A IN
-%PARANOMASTIS OR ARITHMHTHS
-altprev_prc1=prctile(results_altprevalence_timeseries(1201,:),[2.5 50 97.5]);
-altprev_prc2=prctile(results_altprevalence_timeseries(2401,:),[2.5 50 97.5]);
-altprev_prc3=prctile(results_altprevalence_timeseries(4401,:),[2.5 50 97.5]);
-altprev_prc4=prctile(results_altprevalence_timeseries(4701,:),[2.5 50 97.5]);
-altprev_prc5=prctile(results_altprevalence_timeseries(5001,:),[2.5 50 97.5]);
-altprev_prc6=prctile(results_altprevalence_timeseries(5401,:),[2.5 50 97.5]);
-altprev_prc7=prctile(results_altprevalence_timeseries(5701,:),[2.5 50 97.5]);
-altprev_prc8=prctile(results_altprevalence_timeseries(5901,:),[2.5 50 97.5]);
-altprev_table=[altprev_prc1;altprev_prc2;altprev_prc3;altprev_prc4;altprev_prc5;altprev_prc6;altprev_prc7;altprev_prc8;];
-for j=1:5901
-altprev_prcj(j,:)=prctile(results_altprevalence_timeseries(j,:),[2.5 50 97.5]); 
-%prev_prcj95(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 95]); 
-%prev_prcj90(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 90]); 
-end
+
 %ESTIMATE 2.5,MEDIAN,7.5 PREVALENCE after the running-i doit after running this code but(maybe it can be done
 %on the same code Ihaven;t tried it!
 for j=1:5901
 prev_prcj(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 97.5]); 
-%prev_prcj95(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 95]); 
-%prev_prcj90(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 90]); 
 end
-for j=1:5901
-prevA_prcj(j,:)=prctile(results_prevalenceA_timeseries(j,:),[2.5 50 97.5]); 
-%prev_prcj95(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 95]); 
-%prev_prcj90(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 90]); 
-end
-for j=1:5901
-altprev_prcj(j,:)=prctile(results_altprevalence_timeseries(j,:),[2.5 50 97.5]); 
-%prev_prcj95(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 95]); 
-%prev_prcj90(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 90]); 
-end
-
-prevA_prc1=prctile(results_prevalenceA_timeseries(1201,:),[2.5 50 97.5]);
-prevA_prc2=prctile(results_prevalenceA_timeseries(2401,:),[2.5 50 97.5]);
-prevA_prc3=prctile(results_prevalenceA_timeseries(4401,:),[2.5 50 97.5]);
-prevA_prc4=prctile(results_prevalenceA_timeseries(4701,:),[2.5 50 97.5]);
-prevA_prc5=prctile(results_prevalenceA_timeseries(5001,:),[2.5 50 97.5]);
-prevA_prc6=prctile(results_prevalenceA_timeseries(5401,:),[2.5 50 97.5]);
-prevA_prc7=prctile(results_prevalenceA_timeseries(5701,:),[2.5 50 97.5]);
-prevA_prc8=prctile(results_prevalenceA_timeseries(5901,:),[2.5 50 97.5]);
-prevA_table=[prev_prc1;prevA_prc2;prevA_prc3;prevA_prc4;prevA_prc5;prevA_prc6;prevA_prc7;prevA_prc8;];
-%t1=1:5901;
-%plot(t1,prev_prcj)
-%title ('Model fit Main Scenario')
-%legend('2.5', '50','97.5','Location','northwest')
-
-%beta_values_h=7.9*beta_values;
-%p-percentiles
 p1_prc = prctile(results(:,1),[2.5 50 97.5]) ;
 p2_prc = prctile(results(:,2),[2.5 50 97.5]) ;
 p3_prc = prctile(results(:,3),[2.5 50 97.5]) ;
 
-%Rel_prc0=prctile(Rel,[2.5 50 97.5]);
-%Rel_prc8=prctile(Rel,[2.5 50 97.5]);
- %%%
- %%% 23Nov2018_AL:
- %%% Here we plot the prevalence over time for all the runs. This is where
- %%% you can check whether or not your fitted_p gave reasonable results.
- %%% Question: How do the model runs compare to the original data? Are they
- %%%           close? What I mean is, does the modelled prevalence line
- %%%           come close to all the data points? To see this, try to plot
- %%%           the data points on the same graph as the modelled prevalence
- %%%           lines.
  figure(1);
  plot(t,results_prevalence_timeseries)
-  %plot(1:size(y,1),results_prevalence_timeseries)
  figure(2);
  plot(t,results_incidence_timeseries)
-  %plot(1:size(y,1),results_incidence_timeseries)
-  %PLOT BEST_FITTED_P SOLUTION
-  %figure(4);
-  %P_f=results_prevalence_timeseries(:,963);
-  %plot(t,P_f);
-  %P_m=results_prevalence_timeseries(:,944);
-  %plot(t,P_m);
-  %IR_f=results_incidence_timeseries(:,963);
-  figure(3); 
- plot(t,results_prevalenceA_timeseries) 
+ 
   %CALCULATE INCIDENCE NUMBER
-for j=1:5901
-TP_prcj(j,:)=prctile(P(j,:),[2.5 50 97.5]); 
-end
-
-  %TP_b=[t,P_b(:,249)];
-  %MODEL PREDICTIONS 2009/
   %take the cases calculated in each month of each year
   IN_9=TP_prcj([1,101,201,301,401,501,601,701,801,901,1001,1101],:);
   %add them up
@@ -590,42 +361,5 @@ end
   S_13=sum(IN_13);%#301.7750 VS EKTEPN 2012 (N=270)
    %CUMULATIVE NUMBER FOR EACH YEAR
   CN=[S_9;S_9+S_10;S_9+S_10+S_11;S_9+S_10+S_11+S_12;S_9+S_10+S_11+S_12+S_13];
-  
-  %CALCULATE INCIDENCE NUMBER
-  %TP=[t,P(:,963)];
-  %MODEL PREDICTIONS 2009
-  %IN_9=TP([1,101,201,301,401,501,601,701,801,901,1001,1101],2);
-  %S_9=sum(IN_9,1);%#55.2503 VS EKTEPN 2009 (N=15)
-  %MODEL PREDICTIONS 2010
-  %IN_10=TP([1201,1301,1401,1501,1601,1701,1801,1901,2001,2101,2201,2301],2);
-  %S_10=sum(IN_10,1);%#161.1281 VS EKTEPN 2010 (N=29)
-  %MODEL PREDICTIONS 2011
-  %IN_11=TP([2401,2501,2601,2701,2801,2901,3001,3101,3201,3301,3401,3501],2);
-  %S_11=sum(IN_11,1);%#410.1383 VS EKTEPN 2011 (N=319)
-  %MODEL PREDICTIONS 2012
-  %IN_12=TP([3601,3701,3801,3901,4001,4101,4201,4301,4401,4501,4601,4701],2);
-  %S_12=sum(IN_12,1);%#570.7239 VS EKTEPN 2012 (N=523)
-   %MODEL PREDICTIONS 2013
-  %IN_13=TP([4801,4901,5001,5101,5201,5301,5401,5501,5601,5701,5801,5901],2);
-  %S_13=sum(IN_13,1);%#301.7750 VS EKTEPN 2012 (N=270)
-  %CUMULATIVE NUMBER FOR EACH YEAR
-  %CN=[S_9;S_9+S_10;S_9+S_10+S_11;S_9+S_10+S_11+S_12;S_9+S_10+S_11+S_12+S_13];
-  
+   
  
-% Calculate the infected prevalence with this new fitted parameter beta
-% Note that this is the same as before: Infected Prevalence =
-% I/(SL+SH+I)note:it is the classical prevalence term
-%infected_prevalence_calculation_SI = y(:,3)./(y(:,1)+y(:,2)+y(:,3));
-%incidence_calculation_SI=beta*infected_prevalence_calculation_SI;
-%%betalow*infected_prevalence_calculation_SI*(y(:,1)+10*y(:,2))/(y(:,1)+y(:,2));
-
-% Display and compare with what you expect - which we said was 0.11 (i.e. 11%)
-  %disp('Infected prevalence using the fitted parameter')
-  %disp([infected_prevalence_calculation_SI(101),infected_prevalence_calculation_SI(201),infected_prevalence_calculation_SI(end)])
-  %disp('Incidence using the fitted parameter')
-  %disp(incidence_calculation_SI(end))
-
-% Plot the time series
- % plot(tspan,infected_prevalence_calculation_SI)
-  %axis([0 15 9 12])
-  %title('Infected Prevalence Over Time')
