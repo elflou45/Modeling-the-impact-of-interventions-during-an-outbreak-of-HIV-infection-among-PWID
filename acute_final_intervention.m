@@ -79,7 +79,7 @@ for i=1:iterations
   %r16(i)=0.2288318+(0.5278514-0.2288318)*rand;
   %r17(i)=0.14476+(0.4001857-0.14476)*rand;
 end
-%figure; hold on
+
 num_param = size(p0,2);
 results=zeros(iterations, num_param); %
 options=optimset('disp','iter','LargeScale','off','TolFun',1.0e-10,'MaxIter',10000,'MaxFunEvals',10000);
