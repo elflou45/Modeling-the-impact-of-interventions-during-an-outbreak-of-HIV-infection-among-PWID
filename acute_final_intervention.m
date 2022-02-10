@@ -92,24 +92,6 @@ z3 = 0.122+(0.509-0.122)*rand(1,iterations);
 z4 = 0.096+(0.261-0.096)*rand(1,iterations);
 z5 = 0.109+(0.344-0.109)*rand(1,iterations);
 
-
-%INSERT 95%CI'S FOR ARISTOTLE RECEIVED SYRINGES (RESULTS FROM LINEAR
-%REGRESSION MODEL)
-%nsp1 = 0.0852+(0.0987-0.0852)*rand(1,iterations);  
-%nsp2 = 0.1204+(0.147-0.1204)*rand(1,iterations);
-%nsp3 = 0.156+(0.196-0.156)*rand(1,iterations);
-%nsp4 = 0.191+(0.245-0.191)*rand(1,iterations);
-%nsp5 = 0.226+(0.293-0.226)*rand(1,iterations);
-%nsp6 = 0.261+(0.342-0.261)*rand(1,iterations);
-%nsp7 = 0.297+(0.391-0.297)*rand(1,iterations);
-%nsp8 = 0.332+(0.439-0.332)*rand(1,iterations);
-%INSERT 95%CI'S FOR ARISTOTLE RECEIVED SYRINGES (RDS weighted estimates)
-%nsp9 = 0.367+(0.488-0.367)*rand(1,iterations);  
-%nsp10 = 0.275+(0.378-0.275)*rand(1,iterations);
-%nsp11 = 0.373+(0.498-0.373)*rand(1,iterations);
-%nsp12= 0.263+(0.37-0.263)*rand(1,iterations);
-%nsp13= 0.277+(0.368-0.277)*rand(1,iterations);
-
 %INSERT 95%CI'S FOR ARISTOTLE ADEQUATE SYRINGE (RESULTS FROM LINEAR
 %REGRESSION MODEL)
 nsp1 = 0.0568043+(0.0665792-0.0568043)*rand(1,iterations);  
@@ -166,9 +148,6 @@ for i=1:iterations
     current_nsp12=nsp12(i);
     current_nsp13=nsp13(i);
    
-% This means that nothing is output to the display after the fit. Can be
-% changed if necessary.
-%options=optimset('display','off');
    
 % Fit the parameter to the system of equations with this initial guess
     [fitted_p,resnorm,residual,exitflag,output]= lsqnonlin(@(p) acute_mdfit_final(p,current_r1,current_r2, current_r3,current_r4,current_r5,current_r6,current_r7,current_r8,current_r9,current_r10,current_r11,current_r12,current_r13,current_r14,current_r15,current_r16,current_r17,current_r18,current_z1,current_z2,current_z3,current_z4,current_z5,current_nsp1,current_nsp2,current_nsp3,current_nsp4,current_nsp5,current_nsp6,current_nsp7,current_nsp8,current_nsp9,current_nsp10,current_nsp11,current_nsp12,current_nsp13), p0,p_lb, p_ub,options);%fitted_p_lb, p_ub p 
@@ -178,12 +157,6 @@ fitted_p;
     resnorm ;
     A(i,:)=[i,resnorm];
     [M,I] = min(A);
-    %KANW COPY-PASTE TO:R=[I(2),M(2)]
-    %META PAS STA RESULTS KAI VRISKEIS BETA, KAPPA&GAMMA KOITAZONTAS TO I(2) STHN VARIABLE RESULTS
-    %figure(1);
-    %labels=cellstr(num2str(i));
-   %plot(i,resnorm,'r*')
-   %text(i,resnorm,labels,'HorizontalAlignment','right')
     
  
  %%% Now solve the system of equations using the fitted_p that was just
@@ -200,13 +173,6 @@ fitted_p;
 
  
  %PREVALENCES FOR THE TIMEPOINTS THAT I HAVE DATA:
-  %results1_prevalence(i) = 100*(y(1201,2)+y(1201,5))/sum(y(1201,:),2);
-  %results2_prevalence(i) = 100*(y(2401,2)+y(2401,5))/sum(y(2401,:),2);
-  %results3_prevalence(i) = 100*(y(4401,2)+y(4401,5))/sum(y(4401,:),2);
-  %results4_prevalence(i) = 100*(y(4701,2)+y(4701,5))/sum(y(4701,:),2);
-  %results5_prevalence(i) = 100*(y(5001,2)+y(5001,5))/sum(y(5001,:),2);
-  %results6_prevalence(i) = 100*(y(5401,2)+y(5401,5))/sum(y(5401,:),2);
-  %results7_prevalence(i) = 100*(y(5701,2)+y(5701,5))/sum(y(5701,:),2);
   N=8056;
   w =current_r18;%0.42;
   u=10;%7.9;
@@ -227,24 +193,10 @@ fitted_p;
 %I1=y(5)
  
   %FORCE OF INFECTION/LOW RISK
-  %lamda01(i)=fitted_p(1)*((r*y(1201,2)+w*y(1201,3))/N);
-  %lamda02(i)=fitted_p(1)*((y(2401,2)+w*y(2401,3))/N);
-  %lamda03(i)=fitted_p(1)*((y(4401,2)+w*y(4401,3))/N);
-  %lamda04(i)=fitted_p(1)*((y(4701,2)+w*y(4701,3))/N);
-  %lamda05(i)=fitted_p(1)*((y(5001,2)+w*y(5001,3))/N);
-  %lamda06(i)=fitted_p(1)*((y(5401,2)+w*y(5401,3))/N);
-  %lamda07(i)=fitted_p(1)*((y(5701,2)+w*y(5701,3))/N);
   
   lamda0(:,i)=fitted_p(1)*((r*y(:,2)+y(:,3)+w*y(:,4))/N);
   
   %FORCE OF INFECTION/HIGH RISK
-  %lamda11(i)=u*fitted_p(1)*(y(1201,5)/N);
-  %lamda12(i)=u*fitted_p(1)*(y(2401,5)/N);
-  %lamda13(i)=u*fitted_p(1)*(y(4401,5)/N);
-  %lamda14(i)=u*fitted_p(1)*(y(4701,5)/N);
-  %lamda15(i)=u*fitted_p(1)*(y(5001,5)/N);
-  %lamda16(i)=u*fitted_p(1)*(y(5401,5)/N);
-  %lamda17(i)=u*fitted_p(1)*(y(5701,5)/N);
   
   lamda1(:,i)=u*fitted_p(1)*((r*y(:,6)+y(:,7)+w*y(:,8))/N);
   
@@ -256,26 +208,12 @@ fitted_p;
   
   
 %INCIDENCE RATE PER TIMEPOINT
-  %results1_incidencerate(i) = 100*12*(lamda01(i)*y(1201,1)+lamda11(i)*y(1201,4))./(y(1201,1)+y(1201,4));
-  %results2_incidencerate(i) = 100*12*(lamda02(i)*y(2401,1)+lamda12(i)*y(2401,4))./(y(2401,1)+y(2401,4));
-  %results3_incidencerate(i) = 100*12*(lamda03(i)*y(4401,1)+lamda13(i)*y(4401,4))./(y(4401,1)+y(4401,4));
-  %results4_incidencerate(i) = 100*12*(lamda04(i)*y(4701,1)+lamda14(i)*y(4701,4))./(y(4701,1)+y(4701,4));
-  %results5_incidencerate(i) = 100*12*(lamda05(i)*y(5001,1)+lamda15(i)*y(5001,4))./(y(5001,1)+y(5001,4));
-  %results6_incidencerate(i) = 100*12*(lamda06(i)*y(5401,1)+lamda16(i)*y(5401,4))./(y(5401,1)+y(5401,4));
-  %results7_incidencerate(i) = 100*12*(lamda07(i)*y(5701,1)+lamda17(i)*y(5701,4))./(y(5701,1)+y(5701,4));
-  
-  
-  %ESTIMATE 2.5,MEDIAN,7.5 INCIDENCE after the running-i doit after running this code but(maybe it can be done
-%on the same code Ihaven;t tried it!
 for j=1:5901
 incid_prcj(j,:)=prctile(results_incidence_timeseries(j,:),[2.5 50 97.5]);
 %incid_prcj95(j,:)=prctile(results_incidence_timeseries(j,:),[2.5 50 95]);
 %incid_prcj90(j,:)=prctile(results_incidence_timeseries(j,:),[2.5 50 90]);
 end
-%t1=1:5901;
-%plot(t1,incid_prcj)
-%title ('Model fit Main Scenario')
-  %INCIDENCE RATE PER TIMEPOINT/97.5 PERCENTILES
+%INCIDENCE RATE PER TIMEPOINT/97.5 PERCENTILES
   
   incidence_prc0=prctile(results_incidence_timeseries(1,:),[2.5 50 97.5]);
   incidence_prc1=prctile(results_incidence_timeseries(1201,:),[2.5 50 97.5]);
@@ -289,8 +227,7 @@ end
   incid_table=[incidence_prc0;incidence_prc1;incidence_prc2;incidence_prc3;incidence_prc4;incidence_prc5;incidence_prc6;incidence_prc7;incidence_prc8;];
   
   
-  
- %INCIDENCE RATE
+  %INCIDENCE RATE
   %results_incidence_timeseries=bsxfun(@rdivide,P,S');
   
   %PREVALENCE TIMESERIES
@@ -310,8 +247,6 @@ end
  
 for j=1:5901
 freq_prcj(j,:)=prctile(results_frequency_timeseries(j,:),[2.5 50 97.5]);
-%freq_prcj95(j,:)=prctile(results_frequency_timeseries(j,:),[2.5 50 95]);
-%freq_prcj90(j,:)=prctile(results_frequency_timeseries(j,:),[2.5 50 90]);
 end
 results;
 
@@ -327,9 +262,6 @@ prev_prc7=prctile(results_prevalence_timeseries(5701,:),[2.5 50 97.5]);
 prev_prc8=prctile(results_prevalence_timeseries(5901,:),[2.5 50 97.5]);
 prev_table=[prev_prc1;prev_prc2;prev_prc3;prev_prc4;prev_prc5;prev_prc6;prev_prc7;prev_prc8;];
 
-
-%ESTIMATE 2.5,MEDIAN,7.5 PREVALENCE after the running-i doit after running this code but(maybe it can be done
-%on the same code Ihaven;t tried it!
 for j=1:5901
 prev_prcj(j,:)=prctile(results_prevalence_timeseries(j,:),[2.5 50 97.5]); 
 end
