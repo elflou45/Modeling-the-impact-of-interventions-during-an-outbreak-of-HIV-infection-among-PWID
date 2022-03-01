@@ -3,14 +3,14 @@ function dy = acutemfit_eq_final(t,y,fitted_p,current_r18,current_z1,current_z2,
 %% create a vector dy 6x1, six rows and one column
   dy = zeros(length(y),1);
 % Write the equations
-q=(1/12)/12; %9 OR 15 YEARS FOR SENSITIVITY ANALYSIS
+q=(1/12)/12; 
 m=(0.0231)/12;%death rate per month from Mathers for Western Europe
 N=8056;
 d=1/3;
 h=m+q;
 param1 = fitted_p(1);
 
-if t>=1 && t<44%UNTIL july 2012
+if t>=1 && t<44
 param3=0;
 elseif t>=44 && t<=60
 param3=fitted_p(3);
@@ -84,9 +84,9 @@ lamda1=u*param1*((r*y(6)+y(7)+w*y(8))/N);
 
   dy(1)=h*(1-z)*N-lamda0*nsp_r*y(1)-(m+q)*y(1)+param2*y(5);%S0
   dy(2)=lamda0*nsp_r*y(1)-(d+m+q)*y(2)+param2*y(6);%H0
-  dy(3)=d*y(2)-(m+q+param3)*y(3)+param2*y(7);%I0 +param3*y(5)
+  dy(3)=d*y(2)-(m+q+param3)*y(3)+param2*y(7);%I0 
   dy(4)=param3*y(3)-(m+q)*y(4)+param2*y(8);%A0
-  dy(5)=h*z*N-lamda1*nsp_r*y(5)-(m+q)*y(5)-param2*y(5);% S1 -param3*y(5);
+  dy(5)=h*z*N-lamda1*nsp_r*y(5)-(m+q)*y(5)-param2*y(5);% S1 
   dy(6)=lamda1*nsp_r*y(5)-param2*y(6)-(d+m+q)*y(6);%H1
   dy(7)=d*y(6)-(m+q)*y(7)-param2*y(7)-(param3/1.69)*y(7);%I1
   dy(8)=(param3/1.69)*y(7)-(m+q+param2)*y(8);%A1
