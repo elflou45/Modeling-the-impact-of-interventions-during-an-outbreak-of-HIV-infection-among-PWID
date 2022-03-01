@@ -1,9 +1,8 @@
-%IN ORDER TO RUN THIS CODE COPY&PASTE THE THREE FILES IN MATLAB IN SEPARATE FILES AND RUN FIRSTLY THIS FILE, WHICH WILL THEN CALL THE TWO OTHERS FILES(FUNCTION FILES)
+%IN ORDER TO RUN THIS CODE, RUN FIRSTLY THIS FILE, WHICH WILL THEN CALL THE TWO OTHERS FILES(FUNCTION FILES)
 clear all; clc;
-%% Intervention Scenario:Adequate Syringe&HAART1&Normal Prevalence(-->because normal prevalence fits better to data)
+%% Intervention Scenario:
 
-% Guess what beta might be. Note: lb = lower bound, ub = upper bound
-%p=[beta k gamma]
+% Provide initial values for beta
 
   p0=[0.0044,0.023 ,0.03]; 
   p_lb=[0,0,0];
@@ -11,73 +10,53 @@ clear all; clc;
    
  
  iterations =1000%%200%500
-%INSERT 95%CI'S FOR EKTEPN PREVALENCE(2010-2011)
+%INSERT 95%CI'S FOR GREEK REITOX FOCAL POINT PREVALENCE(2010-2011)
  pd1 = makedist('Triangular','a',0.0029,'b',0.008,'c',0.0172);
  pd2 = makedist('Triangular','a',0.0627,'b',0.081,'c',0.102);
 %INSERT 95%CI'S FOR ARISTOTLE PREVALENCE (RDS weighted estimates) 
  pd3 = makedist('Triangular','a',0.103,'b',0.142,'c',0.18);
- pd4 = makedist('Triangular','a',0.12,'b',0.161,'c',0.201);%0.201
- pd5 = makedist('Triangular','a',0.119,'b',0.162,'c',0.204);%0.204
- pd6 = makedist('Triangular','a',0.095,'b',0.135,'c',0.175);%pd6 = makedist('Triangular','a',0.095,'b',0.135,'c',0.175);%  pd6 = makedist('Triangular','a',0.152,'b',0.165,'c',0.178);
- pd7 = makedist('Triangular','a',0.086,'b',0.12,'c',0.155);%pd7 = makedist('Triangular','a',0.152,'b',0.165,'c',0.178);
+ pd4 = makedist('Triangular','a',0.12,'b',0.161,'c',0.201);
+ pd5 = makedist('Triangular','a',0.119,'b',0.162,'c',0.204);
+ pd6 = makedist('Triangular','a',0.095,'b',0.135,'c',0.175);
 %INSERT 95%CI'S FOR ARISTOTLE's FREQUENCY OF INJECTING(RDS weighted estimates)  
  pd8 = makedist('Triangular','a',0.394,'b',0.452,'c',0.51);
  pd9 = makedist('Triangular','a',0.162,'b',0.203,'c',0.243);
  pd10 = makedist('Triangular','a',0.167,'b',0.213,'c',0.259);
  pd11 = makedist('Triangular','a',0.147,'b',0.189,'c',0.23);
  pd12 = makedist('Triangular','a',0.152,'b',0.188,'c',0.224);
-%INSERT 95%CI'S FOR ARISTOTLE's HAART (nonRDS weighted estimates-SYPSA JID 2017) 
- %pd13 = makedist('Triangular','a',0.003,'b',0.015,'c',0.044);
- %pd14 = makedist('Triangular','a',0.087,'b',0.125,'c',0.17);
- %pd15 = makedist('Triangular','a',0.128,'b',0.168,'c',0.215);
- %pd16 = makedist('Triangular','a',0.16,'b',0.2,'c',0.247);%pd16 = makedist('Triangular','a',0.128,'b',0.168,'c',0.215);pd16 = makedist('Triangular','a',0.1283106,'b',0.168,'c',0.2147546);%pd16 = makedist('Triangular','a',0.160,'b',0.201,'c',0.2470);
- %pd17 = makedist('Triangular','a',0.202,'b',0.245,'c',0.292);%;%pd17 = makedist('Triangular','a',0.128,'b',0.168,'c',0.215)pd17 = makedist('Triangular','a',0.1283106,'b',0.168,'c',0.2147546);%pd17 = makedist('Triangular','a',0.2015001,'b',0.245,'c',0.2917937);%foralternative_finalmodel:%pd17=makedist('Triangular','a',0.1595492,'b',0.201,'c',0.2468547);%
- %INSERT 95%CI'S FOR ARISTOTLE's of ART-self-reported -RDS weighted
- %pd13 = makedist('Triangular','a',0.0171109,'b',0.0416777,'c',0.0979992);
- %pd14 = makedist('Triangular','a',0.1057056,'b',0.1975498,'c',0.338949);
- %pd15 = makedist('Triangular','a',0.1606379,'b',0.2628129,'c',0.3990776);
- %pd16 = makedist('Triangular','a',0.2288318,'b',0.3654703,'c',0.5278514);
- %pd17 = makedist('Triangular','a',0.14476,'b',0.2515245,'c',0.4001857);
- %ART Estimates FOR LOW RISK--> 0.0909,0212,0326,0348,0.348
+%ART Estimates FOR LOW RISK--> 0.0909,0212,0326,0348,0.348
 pd13 = makedist('Triangular','a',0.04,'b',0.09,'c',0.18);
 pd14 = makedist('Triangular','a',0.15,'b',0.21,'c',0.29);
 pd15 = makedist('Triangular','a',0.25,'b',0.329,'c',0.41);
 pd16 = makedist('Triangular','a',0.29,'b',0.375,'c',0.46);
 pd17 = makedist('Triangular','a',0.25,'b',0.324,'c',0.41);
  %INSERT VARIABILITY FOR ART EFFICACY
-pd18=makedist('Uniform','lower',0.25,'upper',0.75);%SENSITIVITY SCENARIO%pd18=makedist('Uniform','lower',0.25,'upper',0.75);
+pd18=makedist('Uniform','lower',0.25,'upper',0.75);
 
  rng('default');  % For reproducibility
 
 for i=1:iterations
-   %%95%CI epipolasmou ALL PARTICIPANTS-EKTEPN 
-   r1(i)=random(pd1);%0.0029+(0.0172-0.0029)*rand;r1=0.008;%
-   r2(i)=random(pd2);%0.0627+(0.102-0.0627)*rand;%%*rand;r2=0.081;%%random(pd);%0.008+(0.142-0.008)*rand;%random(pd);
-   %%95%CI epipolasmou ALL PARTICIPANTS-ARISTOTLE-RDS weighted estimates
-   r3(i)=random(pd3);%0.103+(0.18-0.103)*rand;r3=0.142;%
-   r4(i)=random(pd4);%0.12+(0.201-0.12)*rand;r4=0.161;%%=random(pd1);%random(pd);% % %0.0029+(0.0172-0.0029)*rand;random numbers from the (0.29-1.72)space that represents %prevalence from year2009 EKETEPN source
-   r5(i)=random(pd5);%0.119+(0.204-0.119)*rand;r5=0.162;%
-   r6(i)=random(pd6);%0.095+(0.175-0.095)*rand;r6=0.135;%
-   r7(i)=random(pd7);%0.086+(0.155-0.086)*rand;r7=0.12;%
+  
+   r1(i)=random(pd1);
+   r2(i)=random(pd2);
+   r3(i)=random(pd3);
+   r4(i)=random(pd4);
+   r5(i)=random(pd5);
+   r6(i)=random(pd6);
+   r7(i)=random(pd7);
    %95%CI frequency of injecting -ARISTOTLE-RDS weighted estimates
-   r8(i)=random(pd8);%0.394+(0.51-0.394)*rand;r8=0.452;%
-   r9(i)=random(pd9);%0.162+(0.243-0.162)*rand;r9=0.203;%
-   r10(i)=random(pd10);%0.167+(0.259-0.167)*rand;r10=0.213;%
-   r11(i)=random(pd11);%0.147+(0.23-0.147)*rand;r11=0.189;%
-   r12(i)=random(pd12);%0.152+(0.224-0.152)*rand;r12=0.188;%
- %Main scenario:95%CI percent of HAART from Sypsa Rapid Decline JID2017 -nonRDS weighted estimates /
-   r13(i)=random(pd13);%r13=0.015;%0.0031356+(0.0436384-0.0031356)*rand;
-   r14(i)=random(pd14);%r14=0.125;%0.0872919+(0.1704193-0.0872919)*rand;
-   r15(i)=random(pd15);%r15=0.168%0.1283106+(0.2147546-0.1283106)*rand;
-   r16(i)=random(pd16);%r16=0.168;%0.1595492+(0.2468547-0.1595492)*rand;
-   r17(i)=random(pd17);%r17=0.168;%0.2015001+(0.2917937-0.2015001)*rand;
+   r8(i)=random(pd8);
+   r9(i)=random(pd9);
+   r10(i)=random(pd10);
+   r11(i)=random(pd11);
+   r12(i)=random(pd12);
+   r13(i)=random(pd13);
+   r14(i)=random(pd14);
+   r15(i)=random(pd15);
+   r16(i)=random(pd16);
+   r17(i)=random(pd17);
    r18(i)=random(pd18);
-   %Alternative scenario (for sensitivity analysis): %95%CI percent of ART-self-reported -RDS weighted estimates 
-  %r13(i)=0.0171109+(0.0979992-0.0171109)*rand;
-  %r14(i)=0.1057056+(0.338949-0.1057056)*rand;
-  %r15(i)=0.1606379+(0.3990776-0.1606379)*rand;
-  %r16(i)=0.2288318+(0.5278514-0.2288318)*rand;
-  %r17(i)=0.14476+(0.4001857-0.14476)*rand;
+  
 end
 
 num_param = size(p0,2);
@@ -102,7 +81,7 @@ nsp5 = 0.0840216+(0.1328961-0.0840216)*rand(1,iterations);
 nsp6 = 0.0908259+(0.1494753-0.0908259)*rand(1,iterations);
 nsp7 = 0.0976303+(0.1660545-0.0976303)*rand(1,iterations);
 nsp8 = 0.1044346+(0.1826337-0.1044346)*rand(1,iterations);
-%INSERT 95%CI'S FOR ARISTOTLE ADEQUATE SYRINGE (RDS weighted estimates)
+%Proportion with adequate syringe coverage in past month (95% CI) 
 nsp9 = 0.1112389+(0.1992129-0.1112389)*rand(1,iterations);  
 nsp10 = 0.1580151+(0.2523558-0.1580151)*rand(1,iterations);
 nsp11 = 0.2329493+(0.3500733-0.2329493)*rand(1,iterations);
@@ -165,19 +144,16 @@ fitted_p;
    param2 = fitted_p(2);
    param3 = fitted_p(3);
 
- %%% Note: In order to use the equations file 'mfit_eq_final_g', you will
- %%% have to make sure the input arguments are in the same format
    p = [param1,param2,param3];
    
   [t,y] = ode45(@(t,y) acutemfit_eq_final(t,y,p,current_r18,current_z1,current_z2,current_z3,current_z4,current_z5,current_nsp1,current_nsp2,current_nsp3,current_nsp4,current_nsp5,current_nsp6,current_nsp7,current_nsp8,current_nsp9,current_nsp10,current_nsp11,current_nsp12,current_nsp13), [1:0.01:60], [4432.72 0 26.7569 0 3574.94 0 21.5791 0], options);
 
  
- %PREVALENCESFOR THE TIMEPOINTS THAT I HAVE DATA:
   N=8056;
   w =current_r18;%0.42;
   u=10;%7.9;
   %u = 7.9;
-  q=(1/12)/12; %SENSITIVITY SCENARIO
+  q=(1/12)/12; 
   m=(0.0231)/12;%death rate per month from Mathers (Western Europe)
   r=26;%18;
   d=1/3;%0.6;%1/2;
@@ -200,7 +176,7 @@ fitted_p;
   
   lamda1(:,i)=u*fitted_p(1)*((r*y(:,6)+y(:,7)+w*y(:,8))/N);
   
-  %%Incidence_number 
+  %%NUMBER OF NEW INFECTIONS 
   P=(bsxfun(@times,lamda0,y(:,1))+(bsxfun(@times,lamda1,y(:,5))));%lamda0.*y(:,1)+lamda1.*y(:,4));
   S=(y(:,1)+y(:,5));
   %INCIDENCE RATE
@@ -251,7 +227,7 @@ end
 results;
 
 %PREVALENCE PERCENTILES AT AVAILABLE DATA TIMEPOINTS
-%prev_prc0=0.006;
+
 prev_prc1=prctile(results_prevalence_timeseries(1201,:),[2.5 50 97.5]);
 prev_prc2=prctile(results_prevalence_timeseries(2401,:),[2.5 50 97.5]);
 prev_prc3=prctile(results_prevalence_timeseries(4401,:),[2.5 50 97.5]);
@@ -274,7 +250,7 @@ p3_prc = prctile(results(:,3),[2.5 50 97.5]) ;
  figure(2);
  plot(t,results_incidence_timeseries)
  
-  %CALCULATE INCIDENCE NUMBER
+  %CALCULATE CUMULATIVE NUMBER OF NEW INFECTIONS
   %take the cases calculated in each month of each year
   IN_9=TP_prcj([1,101,201,301,401,501,601,701,801,901,1001,1101],:);
   %add them up
