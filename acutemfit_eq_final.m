@@ -42,7 +42,7 @@ elseif t>=55 && t<=60
    z=current_z5; 
 end
 
-%ADEQUATE SYRINGE COVERAGE-RDS WEIGHTED(LINEAR MODEL):
+%Proportion with adequate syringe coverage in past month (95% CI):
    if t>=1 && t<36
     nsp=0.0;
    elseif t>=36 && t<37
