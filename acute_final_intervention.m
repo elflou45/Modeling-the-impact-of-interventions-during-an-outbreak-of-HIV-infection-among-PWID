@@ -44,7 +44,6 @@ for i=1:iterations
    r5(i)=random(pd5);
    r6(i)=random(pd6);
    r7(i)=random(pd7);
-   %95%CI frequency of injecting -ARISTOTLE-RDS weighted estimates
    r8(i)=random(pd8);
    r9(i)=random(pd9);
    r10(i)=random(pd10);
@@ -158,10 +157,6 @@ fitted_p;
   r=26;%18;
   d=1/3;%0.6;%1/2;
 %TRANSMISSION PER MONTH PERIOD
-%lamda0=beta*((I0+w*A)/N)  ;
-%lamda1=u*beta*(I1/N)   ;
-%incidence_number=lamda0*(S0)+lamda1*(S1);
-%incidence_rate=12*100*incidence_number/S;
 %S0=y(1)
 %I0=y(2)
 %A=y(3)
@@ -177,17 +172,15 @@ fitted_p;
   lamda1(:,i)=u*fitted_p(1)*((r*y(:,6)+y(:,7)+w*y(:,8))/N);
   
   %%NUMBER OF NEW INFECTIONS 
-  P=(bsxfun(@times,lamda0,y(:,1))+(bsxfun(@times,lamda1,y(:,5))));%lamda0.*y(:,1)+lamda1.*y(:,4));
+  P=(bsxfun(@times,lamda0,y(:,1))+(bsxfun(@times,lamda1,y(:,5))));
   S=(y(:,1)+y(:,5));
   %INCIDENCE RATE
-  results_incidence_timeseries=bsxfun(@rdivide,100*12*P,S);%=100*12*P./S;
+  results_incidence_timeseries=bsxfun(@rdivide,100*12*P,S);
   
   
 %INCIDENCE RATE PER TIMEPOINT
 for j=1:5901
 incid_prcj(j,:)=prctile(results_incidence_timeseries(j,:),[2.5 50 97.5]);
-%incid_prcj95(j,:)=prctile(results_incidence_timeseries(j,:),[2.5 50 95]);
-%incid_prcj90(j,:)=prctile(results_incidence_timeseries(j,:),[2.5 50 90]);
 end
 %INCIDENCE RATE PER TIMEPOINT/97.5 PERCENTILES
   
@@ -207,11 +200,11 @@ end
   %results_incidence_timeseries=bsxfun(@rdivide,P,S');
   
   %PREVALENCE TIMESERIES
-  results_prevalence_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7))./N;%sum(y(:,:),2);
+  results_prevalence_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7))./N;
   results_prevalenceA_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7)+y(:,4)+y(:,8))./N;
-  results_altprevalence_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7))./(N-y(:,4)-y(:,8));%sum(y(:,:),2);
+  results_altprevalence_timeseries(:,i) = 100*(y(:,2)+y(:,3)+y(:,6)+y(:,7))./(N-y(:,4)-y(:,8));
   %CALCULATE JUST THE PREVALENCE THAT COMES FROM THE BEST FITTED PARAMETERS
-  results_frequency_timeseries(:,i) = 100*(y(:,5)+y(:,6)+y(:,7)+y(:,8))./N;%sum(y(:,:),2);
+  results_frequency_timeseries(:,i) = 100*(y(:,5)+y(:,6)+y(:,7)+y(:,8))./N;
  %FREQUENCY PERCENTILES AT AVAILABLE DATA TIMEPOINTS
  frequency_prc4=prctile(results_frequency_timeseries(4701,:),[2.5 50 97.5]);
  frequency_prc5=prctile(results_frequency_timeseries(5001,:),[2.5 50 97.5]);
