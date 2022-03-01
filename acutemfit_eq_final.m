@@ -45,7 +45,7 @@ end
 %ADEQUATE SYRINGE COVERAGE-RDS WEIGHTED(LINEAR MODEL):
    if t>=1 && t<36
     nsp=0.0;
-   elseif t>=36 && t<37%-->12/11 NSP BOOST
+   elseif t>=36 && t<37
     nsp=0.05;
    elseif t>=37 && t<38
      nsp=current_nsp1;
